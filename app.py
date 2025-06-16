@@ -35,6 +35,20 @@ def submit():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/submittodoitem", methods=["POST"])
+def submittodoitem():
+    item_name = request.form.get("itemName")
+    item_desc = request.form.get("itemDescription")
+
+    if item_name and item_desc:
+        collection.insert_one({
+            "name": item_name,
+            "description": item_desc
+        })
+        return "Data submitted successfully"
+    else:
+        return "Missing data", 400
+
 @app.route('/success')
 def success():
     return render_template('success.html')
